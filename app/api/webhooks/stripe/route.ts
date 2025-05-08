@@ -1,13 +1,13 @@
 import { headers } from 'next/headers';
 import { NextResponse } from 'next/server';
 import Stripe from 'stripe';
-import { Resend } from 'resend';
+// import { Resend } from 'resend';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: '2025-04-30.basil',
 });
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+// const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function POST(req: Request) {
   const body = await req.text();
@@ -32,45 +32,45 @@ export async function POST(req: Request) {
   try {
     switch (event.type) {
       case 'checkout.session.completed': {
-        const session = event.data.object as Stripe.Checkout.Session;
+        // const session = event.data.object as Stripe.Checkout.Session;
         // Optionally send order confirmation email
-        if (session.customer_email) {
-          await resend.emails.send({
-            from: 'Boho Baha Earrings <orders@yourdomain.com>',
-            to: session.customer_email,
-            subject: 'Order Confirmation - Boho Baha Earrings',
-            html: `
-              <h1>Thank you for your order!</h1>
-              <p>Your order has been confirmed and is being processed.</p>
-              <p>Order ID: ${session.id}</p>
-              <p>Amount: $${(session.amount_total! / 100).toFixed(2)}</p>
-              <p>We'll notify you when your order ships.</p>
-            `,
-          });
-        }
+        // if (session.customer_email) {
+        //   await resend.emails.send({
+        //     from: 'Boho Baha Earrings <orders@yourdomain.com>',
+        //     to: session.customer_email,
+        //     subject: 'Order Confirmation - Boho Baha Earrings',
+        //     html: `
+        //       <h1>Thank you for your order!</h1>
+        //       <p>Your order has been confirmed and is being processed.</p>
+        //       <p>Order ID: ${session.id}</p>
+        //       <p>Amount: $${(session.amount_total! / 100).toFixed(2)}</p>
+        //       <p>We'll notify you when your order ships.</p>
+        //     `,
+        //   });
+        // }
         break;
       }
       case 'payment_intent.succeeded': {
-        const paymentIntent = event.data.object as Stripe.PaymentIntent;
-        console.log('Payment succeeded:', paymentIntent.id);
+        // const paymentIntent = event.data.object as Stripe.PaymentIntent;
+        // console.log('Payment succeeded:', paymentIntent.id);
         break;
       }
       case 'payment_intent.payment_failed': {
-        const paymentIntent = event.data.object as Stripe.PaymentIntent;
-        console.log('Payment failed:', paymentIntent.id);
+        // const paymentIntent = event.data.object as Stripe.PaymentIntent;
+        // console.log('Payment failed:', paymentIntent.id);
         // Optionally send payment failure email
-        if (paymentIntent.receipt_email) {
-          await resend.emails.send({
-            from: 'Boho Baha Earrings <orders@yourdomain.com>',
-            to: paymentIntent.receipt_email,
-            subject: 'Payment Failed - Boho Baha Earrings',
-            html: `
-              <h1>Payment Failed</h1>
-              <p>We were unable to process your payment.</p>
-              <p>Please try again or contact our support team for assistance.</p>
-            `,
-          });
-        }
+        // if (paymentIntent.receipt_email) {
+        //   await resend.emails.send({
+        //     from: 'Boho Baha Earrings <orders@yourdomain.com>',
+        //     to: paymentIntent.receipt_email,
+        //     subject: 'Payment Failed - Boho Baha Earrings',
+        //     html: `
+        //       <h1>Payment Failed</h1>
+        //       <p>We were unable to process your payment.</p>
+        //       <p>Please try again or contact our support team for assistance.</p>
+        //     `,
+        //   });
+        // }
         break;
       }
       default:
